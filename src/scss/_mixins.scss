@@ -1,0 +1,61 @@
+// Breakpoints
+@mixin small{
+    @media screen and (min-width: $small){
+        @content;
+    }
+}
+@mixin medium{
+    @media screen and (min-width: $medium){
+        @content;
+    }
+}
+@mixin large{
+    @media screen and (min-width: $large){
+        @content;
+    }
+}
+@mixin extra-large{
+    @media screen and (min-width: $extra-large){
+        @content;
+    }
+}
+
+// Only Breakpoints
+@mixin extra-small-only{
+    @media screen and (max-width: $small - 1){
+        @content;
+    }
+}
+
+@mixin small-only{
+    @media screen and (min-width: $small) and (max-width: $medium - 1){
+        @content;
+    }
+}
+
+@mixin medium-only{
+    @media screen and (min-width: $medium) and (max-width: $large - 1){
+        @content;
+    }
+}
+
+@mixin large-only{
+    @media screen and (min-width: $large) and (max-width: $extra-large - 1){
+        @content;
+    }
+}
+
+@mixin extra-large-only{
+    @media screen and (min-width: $extra-large){
+        @content;
+    }
+}
+
+// Interactions
+@mixin hover{
+    @media (hover: hover) {
+        &:hover{
+            @content;
+        }
+    }
+}
