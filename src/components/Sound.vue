@@ -36,6 +36,7 @@
         },
         methods: {
             play: function() {
+                this.playingTimeline.seek(0);
                 this.playingTimeline.play();
             },
             initSVG: function(){
@@ -44,7 +45,9 @@
                 this.$refs.circle.style.strokeDasharray = this.circleLength + 'px';
             },
             buildPlayingTimeline: function(){
-                this.playingTimeline.fromTo(this.$refs.circle, {strokeDashoffset: this.circleLength}, {strokeDashoffset: 0, duration: 1, ease: 'power4.out'})
+                this.playingTimeline.fromTo(this.$refs.circle, {stroke: 'rgba(255, 255, 255, 0)'}, {stroke: 'rgba(255,255,255,1)', duration: 0.2, ease: 'none'})
+                this.playingTimeline.fromTo(this.$refs.circle, {strokeDashoffset: this.circleLength}, {strokeDashoffset: 0, duration: 1, ease: 'power4.out'}, '<')
+                this.playingTimeline.to(this.$refs.circle, {stroke: 'rgba(255,255,255,0)', duration: 0.2, ease: 'none'}, '-=.5')
             }
         },
         data: function () {
@@ -75,6 +78,12 @@
             padding-bottom: 25%;
         }
 
+        @include hover{
+            .sound-inner .thumbnail::after{
+                opacity: 0.6;
+            }
+        }
+
         .sound-inner {
             position: absolute;
             top: 0;
@@ -89,7 +98,7 @@
                 right: 0;
                 bottom: 0;
 
-                &:before {
+                &:after {
                     content: '';
                     position: absolute;
                     top: 0;
@@ -97,7 +106,9 @@
                     right: 0;
                     bottom: 0;
                     background: rgb(0, 0, 0);
-                    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%);
+                    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 50%);
+                    opacity: 0.5;
+                    transition: opacity 100ms linear;
                 }
 
                 img {
