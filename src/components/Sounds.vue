@@ -24,7 +24,7 @@
                     return e.key.toLocaleLowerCase() === component.key;
                 })
 
-                soundComponent.play();
+                if(soundComponent) soundComponent.play();
             }
         },
         computed: {

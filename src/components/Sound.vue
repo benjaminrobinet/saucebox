@@ -2,7 +2,7 @@
     <div v-on:click="play" class="sound">
         <div class="sound-inner">
             <div class="thumbnail">
-                <img :src="thumbnail.url" :alt="thumbnail.alt">
+                <img v-if="thumbnail" :src="thumbnail.url" :alt="thumbnail.alt">
             </div>
             <div class="data">
                 <div class="left">
@@ -11,7 +11,7 @@
                 </div>
                 <div class="right">
                     <div ref="duration" class="duration"><span v-if="duration">{{duration}}s</span></div>
-                    <div class="key">
+                    <div class="key" ref="key">
                         <svg viewBox="0 0 50 50">
                             <circle ref="circle" cx="25" cy="25" r="24"/>
                         </svg>
@@ -32,6 +32,7 @@
         name: "Sound",
         mounted() {
             this.initSVG();
+            this.setRandomColor();
 
             this.audio.once('load', () => {
                 this.buildDuration();
@@ -40,10 +41,14 @@
         },
         props: ['sound'],
         methods: {
+            setRandomColor(){
+                this.$el.style.backgroundColor = `rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}`;
+            },
             play() {
                 this.playingTimeline.seek(0);
                 this.playingTimeline.play();
                 this.audio.play();
+                gsap.fromTo(this.$refs.key, {rotateZ: 0, scale: 0.5}, {rotateZ: 360, scale:1, duration: 0.8, ease: 'elastic.out'})
             },
             initSVG() {
                 this.circleLength = this.$refs.circle.getTotalLength();
@@ -58,17 +63,18 @@
                 })
                 this.playingTimeline.fromTo(this.$refs.circle, {strokeDashoffset: this.circleLength}, {
                     strokeDashoffset: 0,
-                    duration: this.duration,
+                    duration: this.realDuration,
                     ease: 'none'
                 }, '<')
                 this.playingTimeline.to(this.$refs.circle, {
                     stroke: 'rgba(255,255,255,0)',
                     duration: 0.2,
                     ease: 'none'
-                }, '-=.2')
+                }, '-=.1')
             },
             buildDuration() {
-                this.duration = moment.duration(this.audio.duration(), 'seconds').seconds();
+                this.realDuration = moment.duration(this.audio.duration(), 'seconds').asSeconds();
+                this.duration = Math.ceil(moment.duration(this.audio.duration(), 'seconds').asSeconds());
             }
         },
         watch: {
@@ -94,13 +100,16 @@
                 return this.data.author[0].text
             },
             thumbnail() {
-                return this.data.thumbnail
+                if(this.data.thumbnail.src) return this.data.thumbnail;
+                else return null;
             },
-            shortcut(){
-                return this.data.key[0].text.charAt(0).toLocaleUpperCase();
+            shortcut() {
+                if(this.data.key.length) return this.data.key[0].text.charAt(0).toLocaleUpperCase();
+                return '';
             },
-            key(){
-                return this.data.key[0].text.charAt(0).toLocaleLowerCase();
+            key() {
+                if(this.data.key.length) return this.data.key[0].text.charAt(0).toLocaleLowerCase();
+                return '';
             },
             audio() {
                 return new Howl({src: [this.data.sound.url]});
@@ -233,6 +242,7 @@
                                 fill: rgba(255, 255, 255, 0.5);
                                 stroke-width: 2px;
                                 stroke: rgba(255, 255, 255, 1);
+                                transform-origin: center center;
                             }
                         }
 
