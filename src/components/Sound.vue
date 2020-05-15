@@ -133,8 +133,8 @@
         }
 
         @include large {
-            width: 25%;
-            padding-bottom: 25%;
+            width: 20%;
+            padding-bottom: 20%;
         }
 
         @include hover {
