@@ -2,21 +2,20 @@
     <div v-on:click="play" class="sound">
         <div class="sound-inner">
             <div class="thumbnail">
-                <img src="https://images.unsplash.com/photo-1588418009167-e30d02643d63?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-                     alt="">
+                <img :src="thumbnail.url" :alt="thumbnail.alt">
             </div>
             <div class="data">
                 <div class="left">
-                    <div class="name">Proute</div>
-                    <div class="author">Victor la grosse merde</div>
+                    <div class="name">{{ title }}</div>
+                    <div class="author">{{ author }}</div>
                 </div>
                 <div class="right">
-                    <div class="duration">2s</div>
+                    <div ref="duration" class="duration"><span v-if="duration">{{duration}}s</span></div>
                     <div class="key">
                         <svg viewBox="0 0 50 50">
                             <circle ref="circle" cx="25" cy="25" r="24"/>
                         </svg>
-                        <span>J</span>
+                        <span>{{shortcut}}</span>
                     </div>
                 </div>
             </div>
@@ -26,34 +25,85 @@
 
 <script>
     import {gsap} from 'gsap';
+    import {Howl} from 'howler';
+    import moment from 'moment';
 
     export default {
         name: "Sound",
         mounted() {
-          this.initSVG();
-          this.buildPlayingTimeline();
+            this.initSVG();
 
+            this.audio.once('load', () => {
+                this.buildDuration();
+                this.buildPlayingTimeline();
+            })
         },
+        props: ['sound'],
         methods: {
-            play: function() {
+            play() {
                 this.playingTimeline.seek(0);
                 this.playingTimeline.play();
+                this.audio.play();
             },
-            initSVG: function(){
+            initSVG() {
                 this.circleLength = this.$refs.circle.getTotalLength();
                 this.$refs.circle.style.strokeDashoffset = this.circleLength + 'px';
                 this.$refs.circle.style.strokeDasharray = this.circleLength + 'px';
             },
-            buildPlayingTimeline: function(){
-                this.playingTimeline.fromTo(this.$refs.circle, {stroke: 'rgba(255, 255, 255, 0)'}, {stroke: 'rgba(255,255,255,1)', duration: 0.2, ease: 'none'})
-                this.playingTimeline.fromTo(this.$refs.circle, {strokeDashoffset: this.circleLength}, {strokeDashoffset: 0, duration: 1, ease: 'power4.out'}, '<')
-                this.playingTimeline.to(this.$refs.circle, {stroke: 'rgba(255,255,255,0)', duration: 0.2, ease: 'none'}, '-=.5')
+            buildPlayingTimeline() {
+                this.playingTimeline.fromTo(this.$refs.circle, {stroke: 'rgba(255, 255, 255, 0)'}, {
+                    stroke: 'rgba(255,255,255,1)',
+                    duration: 0.2,
+                    ease: 'none'
+                })
+                this.playingTimeline.fromTo(this.$refs.circle, {strokeDashoffset: this.circleLength}, {
+                    strokeDashoffset: 0,
+                    duration: this.duration,
+                    ease: 'none'
+                }, '<')
+                this.playingTimeline.to(this.$refs.circle, {
+                    stroke: 'rgba(255,255,255,0)',
+                    duration: 0.2,
+                    ease: 'none'
+                }, '-=.2')
+            },
+            buildDuration() {
+                this.duration = moment.duration(this.audio.duration(), 'seconds').seconds();
             }
         },
-        data: function () {
+        watch: {
+            duration(){
+                gsap.fromTo(this.$refs.duration, {opacity: 0}, {opacity: 1, duration: 0.1, ease: 'none'});
+            }
+        },
+        data() {
             return {
                 circleLength: 0,
-                playingTimeline: gsap.timeline({paused: true})
+                playingTimeline: gsap.timeline({paused: true}),
+                duration: 0
+            }
+        },
+        computed: {
+            data() {
+                return this.sound.data;
+            },
+            title() {
+                return this.data.title[0].text
+            },
+            author() {
+                return this.data.author[0].text
+            },
+            thumbnail() {
+                return this.data.thumbnail
+            },
+            shortcut(){
+                return this.data.key[0].text.charAt(0).toLocaleUpperCase();
+            },
+            key(){
+                return this.data.key[0].text.charAt(0).toLocaleLowerCase();
+            },
+            audio() {
+                return new Howl({src: [this.data.sound.url]});
             }
         }
     }
@@ -68,18 +118,18 @@
         position: relative;
         cursor: pointer;
 
-        @include medium{
+        @include medium {
             width: 33.33%;
             padding-bottom: 33.33%;
         }
 
-        @include large{
+        @include large {
             width: 25%;
             padding-bottom: 25%;
         }
 
-        @include hover{
-            .sound-inner .thumbnail::after{
+        @include hover {
+            .sound-inner .thumbnail::after {
                 opacity: 0.6;
             }
         }
@@ -134,11 +184,11 @@
                 font-size: 14px;
                 padding: 7.5px 2.5px;
 
-                @include small{
+                @include small {
                     padding: 10px 5px;
                 }
 
-                @include large{
+                @include large {
                     font-size: 20px;
                 }
 
@@ -171,7 +221,7 @@
                         border-radius: 50%;
                         position: relative;
 
-                        svg{
+                        svg {
                             position: absolute;
                             top: 0;
                             left: 0;
@@ -179,14 +229,14 @@
                             bottom: 0;
                             transform: rotate3d(0, 0, 1, -90deg);
 
-                            circle{
+                            circle {
                                 fill: rgba(255, 255, 255, 0.5);
                                 stroke-width: 2px;
                                 stroke: rgba(255, 255, 255, 1);
                             }
                         }
 
-                        @include large{
+                        @include large {
                             width: 50px;
                             height: 50px;
                         }
