@@ -11,12 +11,12 @@
                 </div>
                 <div class="right">
                     <div ref="duration" class="duration"><span v-if="duration">{{duration}}s</span></div>
-                    <div class="key" ref="key">
+                    <button class="key" ref="key">
                         <svg viewBox="0 0 50 50">
                             <circle ref="circle" cx="25" cy="25" r="24"/>
                         </svg>
                         <span>{{shortcut}}</span>
-                    </div>
+                    </button>
                 </div>
             </div>
         </div>
@@ -133,6 +133,11 @@
         }
 
         @include large {
+            width: 25%;
+            padding-bottom: 25%;
+        }
+
+        @include extra-large{
             width: 20%;
             padding-bottom: 20%;
         }
@@ -229,6 +234,14 @@
                         align-items: center;
                         border-radius: 50%;
                         position: relative;
+                        border: none;
+                        background: none;
+
+                        font-size: 14px;
+
+                        @include large {
+                            font-size: 20px;
+                        }
 
                         svg {
                             position: absolute;

@@ -8,5 +8,17 @@ module.exports = {
                 `
             }
         }
+    },
+    pwa: {
+        name: 'Saucebox',
+        themeColor: '#000000',
+        msTitleColor: '#ffffff',
+        appleMobileWebAppCapable: 'yes',
+        appleMobileWebAppStatusBarStyle: 'black',
+        workboxPluginMode: 'InjectManifest',
+        iconPaths: {
+            appleTouchIcon: 'img/icons/icon-152x152.png',
+            msTileImage: 'img/icons/icon-144x144.png'
+        }
     }
 };

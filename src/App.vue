@@ -11,6 +11,12 @@
         name: 'App',
         components: {
             Sounds,
+        },
+        metaInfo: {
+            title: 'Saucebox',
+            meta: [
+                { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+            ]
         }
     }
 </script>

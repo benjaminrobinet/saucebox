@@ -17,6 +17,7 @@
     "prismic-javascript": "^2.7.1",
     "prismic-vue": "^2.0.1",
     "vue": "^2.6.11",
+    "vue-meta": "^2.3.3",
     "vuex": "^3.4.0"
   },
   "devDependencies": {
