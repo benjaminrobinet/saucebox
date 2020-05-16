@@ -48,7 +48,7 @@
                 this.playingTimeline.seek(0);
                 this.playingTimeline.play();
                 this.audio.play();
-                gsap.fromTo(this.$refs.key, {rotateZ: 0, scale: 0.5}, {rotateZ: 360, scale:1, duration: 0.8, ease: 'elastic.out'})
+                gsap.fromTo(this.$refs.key, {scale: 0}, {scale:1, duration: 0.8, ease: 'elastic.out'})
             },
             initSVG() {
                 this.circleLength = this.$refs.circle.getTotalLength();
