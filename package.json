@@ -16,6 +16,7 @@
     "prismic-dom": "^2.2.3",
     "prismic-javascript": "^2.7.1",
     "prismic-vue": "^2.0.1",
+    "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-meta": "^2.3.3",
     "vuex": "^3.4.0"
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
     "@vue/cli-plugin-eslint": "~4.3.0",
+    "@vue/cli-plugin-pwa": "^4.3.1",
     "@vue/cli-service": "~4.3.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",

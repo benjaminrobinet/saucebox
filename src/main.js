@@ -4,6 +4,7 @@ import linkResolver from './prismic/link-resolver';
 import PrismicVue from 'prismic-vue';
 import store from './store'
 import VueMeta from 'vue-meta';
+import './registerServiceWorker'
 
 
 Vue.config.productionTip = false
