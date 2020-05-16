@@ -15,7 +15,7 @@ module.exports = {
         msTitleColor: '#ffffff',
         appleMobileWebAppCapable: 'yes',
         appleMobileWebAppStatusBarStyle: 'black',
-        workboxPluginMode: 'InjectManifest',
+        workboxPluginMode: 'GenerateSW',
         iconPaths: {
             appleTouchIcon: 'img/icons/icon-152x152.png',
             msTileImage: 'img/icons/icon-144x144.png'

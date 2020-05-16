@@ -11,12 +11,12 @@
                 </div>
                 <div class="right">
                     <div ref="duration" class="duration"><span v-if="duration">{{duration}}s</span></div>
-                    <button class="key" ref="key">
+                    <div class="key" ref="key">
                         <svg viewBox="0 0 50 50">
                             <circle ref="circle" cx="25" cy="25" r="24"/>
                         </svg>
                         <span>{{shortcut}}</span>
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>
